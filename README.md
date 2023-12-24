@@ -29,45 +29,186 @@
 ## Installation
 
 ```bash
-$ npm install
+$ yarn
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ yarn start
 
 # watch mode
-$ npm run start:dev
+$ yarn start:dev
 
 # production mode
-$ npm run start:prod
+$ yarn start:prod
 ```
 
-## Test
+## GraphQL Schema
 
-```bash
-# unit tests
-$ npm run test
+```graphql
+# Types
+type Datum {
+  # Example field (placeholder)
+  id: String!
 
-# e2e tests
-$ npm run test:e2e
+  # Example field (placeholder)
+  name: String!
 
-# test coverage
-$ npm run test:cov
+  # Example field (placeholder)
+  parentId: String!
+
+  # Example field (placeholder)
+  createdAt: DateTime!
+
+  # Example field (placeholder)
+  cost: Int!
+
+  # Example field (placeholder)
+  children: [Datum!]!
+}
+
+# Available queries
+type Query {
+  data: [Datum!]!
+  datum(id: String!): Datum!
+}
+
+# Data query
+query Data {
+  data {
+    id
+    name
+    parentId
+    createdAt
+    cost
+    children {
+      id
+      name
+      parentId
+      createdAt
+      cost
+    }
+  }
+}
+# Response
+{
+  "data": {
+    "data": [
+      {
+        "id": "uuid-1",
+        "name": "Webprovise Corp",
+        "cost": 52983,
+        "children": [
+          {
+            "name": "Stamm LLC",
+            "cost": 8969,
+            "createdAt": "2021-02-25T10:35:32.978Z"
+          },
+          {
+            "name": "Blanda, Langosh and Barton",
+            "cost": 27579,
+            "createdAt": "2021-02-25T15:16:30.887Z"
+          },
+          {
+            "name": "Bartell - Mosciski",
+            "cost": 64393,
+            "createdAt": "2021-02-25T23:47:57.596Z"
+          },
+          {
+            "name": "Walter, Schmidt and Osinski",
+            "cost": 2033,
+            "createdAt": "2021-02-26T02:31:22.154Z"
+          }
+        ],
+        "createdAt": "2021-02-26T00:55:36.632Z"
+      },
+      {
+        "id": "uuid-2",
+        "name": "Stamm LLC",
+        "cost": 8969,
+        "children": [
+          {
+            "name": "Price and Sons",
+            "cost": 1340,
+            "createdAt": "2021-02-25T06:11:47.519Z"
+          },
+          {
+            "name": "Zieme - Mills",
+            "cost": 1636,
+            "createdAt": "2021-02-25T07:56:32.335Z"
+          },
+          {
+            "name": "Schneider - Adams",
+            "cost": 794,
+            "createdAt": "2021-02-25T21:06:18.777Z"
+          }
+        ],
+        "createdAt": "2021-02-25T10:35:32.978Z"
+      },
+    ]
+  }
+}
+
+# Datum query
+query Datum {
+  datum(id: "uuid-1") {
+    id
+    name
+    parentId
+    createdAt
+    cost
+    children {
+      id
+      name
+      parentId
+      createdAt
+      cost
+    }
+  }
+}
+
+# Response
+{
+  "data": {
+    "datum": {
+      "id": "uuid-1",
+      "name": "Webprovise Corp",
+      "parentId": "0",
+      "createdAt": "2021-02-26T00:55:36.632Z",
+      "cost": 52983,
+      "children": [
+        {
+          "id": "uuid-2",
+          "name": "Stamm LLC",
+          "parentId": "uuid-1",
+          "createdAt": "2021-02-25T10:35:32.978Z",
+          "cost": 8969
+        },
+        {
+          "id": "uuid-3",
+          "name": "Blanda, Langosh and Barton",
+          "parentId": "uuid-1",
+          "createdAt": "2021-02-25T15:16:30.887Z",
+          "cost": 27579
+        },
+        {
+          "id": "uuid-8",
+          "name": "Bartell - Mosciski",
+          "parentId": "uuid-1",
+          "createdAt": "2021-02-25T23:47:57.596Z",
+          "cost": 64393
+        },
+        {
+          "id": "uuid-18",
+          "name": "Walter, Schmidt and Osinski",
+          "parentId": "uuid-1",
+          "createdAt": "2021-02-26T02:31:22.154Z",
+          "cost": 2033
+        }
+      ]
+    }
+  }
+}
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDatumInput } from './dto/create-datum.input';
-import { UpdateDatumInput } from './dto/update-datum.input';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
-import { Company, Datum, Travel } from './entities/datum.entity';
+import { Datum } from './entities/datum.entity';
 
 @Injectable()
 export class DataService {
@@ -80,8 +79,18 @@ export class DataService {
       this.httpService.get(this.companyUrls),
     );
     const travels = await lastValueFrom(this.httpService.get(this.travelUrls));
-    const companiesData = companies.data;
-    const travelsData = travels.data;
+    const companiesData = companies.data.map((company: Datum) => {
+      return {
+        ...company,
+        createdAt: new Date(company.createdAt),
+      };
+    });
+    const travelsData = travels.data.map((travel: Datum) => {
+      return {
+        ...travel,
+        createdAt: new Date(travel.createdAt),
+      };
+    });
     const listCompanies: Datum[] = this.addCostToCompanies(
       companiesData,
       travelsData,
@@ -94,13 +103,22 @@ export class DataService {
       this.httpService.get(this.companyUrls),
     );
     const travels = await lastValueFrom(this.httpService.get(this.travelUrls));
-    const companiesData = companies.data;
-    const travelsData = travels.data;
+    const companiesData = companies.data.map((company: Datum) => {
+      return {
+        ...company,
+        createdAt: new Date(company.createdAt),
+      };
+    });
+    const travelsData = travels.data.map((travel: Datum) => {
+      return {
+        ...travel,
+        createdAt: new Date(travel.createdAt),
+      };
+    });
     const companiesUpdate: Datum[] = this.addCostToCompanies(
       companiesData,
       travelsData,
     );
-    const company = companiesUpdate.find((company) => company.id === id);
-    return company;
+    return companiesUpdate.find((company) => company.id === id);
   }
 }
